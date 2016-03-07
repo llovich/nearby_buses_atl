@@ -20,9 +20,13 @@ class LocationsController < ApplicationController
     # ! changes something permanently
     # select - goes through the array and saves ones that are true of condition
     @buses.select! do |bus|
-      #bc of befote set_location have access to user's long/lat
+      #bc of before set_location have access to user's long/lat
       is_nearby?(@location.latitude, @location.longitude, bus["LATITUDE"], bus["LONGITUDE"])
     end
+   # if @buses.empty?
+   #    redirect_to :back
+   #    flash.now[:notice] = 'no bus!'
+   # end
   end
 
   # GET /locations/new
