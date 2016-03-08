@@ -42,6 +42,8 @@
           lat: <%= @location.latitude %>,
           lng: <%= @location.longitude %>
         };
+        var userIcon = "<%= image_path 'beachflag.png' %>"
+
         // converts ruby to json/javascript
         var nearbyBuses = <%= raw @buses.to_json %>
 
@@ -54,7 +56,8 @@
           position: userLatLng,
           map: map,
           animation: google.maps.Animation.DROP,
-          title: 'You Are Here'
+          title: 'You Are Here',
+          icon: userIcon
         });
 
       nearbyBuses.forEach(function (element){
