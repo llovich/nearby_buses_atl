@@ -23,10 +23,10 @@ class LocationsController < ApplicationController
       #bc of before set_location have access to user's long/lat
       is_nearby?(@location.latitude, @location.longitude, bus["LATITUDE"], bus["LONGITUDE"])
     end
-   # if @buses.empty?
-   #    redirect_to :back
-   #    flash.now[:notice] = 'no bus!'
-   # end
+
+    if @buses.empty?
+      redirect_to new_location_path, notice: "Oops!  No bus nearby.  Try again."
+    end
   end
 
   # GET /locations/new
