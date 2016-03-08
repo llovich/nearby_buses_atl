@@ -25,7 +25,7 @@ class LocationsController < ApplicationController
     end
 
     if @buses.empty?
-      redirect_to new_location_path, notice: "Oops!  No bus nearby.  Try again."
+      redirect_to new_location_path, notice: "Oops!  No bus nearby.  Try another location."
     end
   end
 

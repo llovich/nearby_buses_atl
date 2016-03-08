@@ -1,24 +1,28 @@
 <div class="row">
-  <div class="col-sm-2"></div>
-  <div class="col-sm-8">
-    <div class="text-center"><i class="fa fa-bus fa-4x text-center"></i></div>
-    <p id="notice"><%= notice %></p>
+<div class="col-sm-2"></div>
+<div class="col-sm-8 text-center">
+  <div class="text-center"><i class="fa fa-bus fa-4x text-center"></i></div>
+  <h1>Your Nearby MARTA Buses!</h1></div>
+<div class="col-sm-2"></div>
+</div>
 
-    <h1>Your Escape Bus!</h1>
-    <div id="map"></div>
+<div class="row">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-4">
+   <!-- <p id="notice"><%= notice %></p> -->
 
     <h3 class="text-muted">Your Current Location</h3>
     <p class="text-muted">
       <strong>Address:</strong>
-      <%= @location.full_street_address %>
-      <%= link_to 'Edit your location.', edit_location_path(@location) %>
+      <%= @location.full_street_address %><br/>
+      <%= link_to fa_icon('pencil', text: "Edit your location."), edit_location_path(@location) %>
     </p>
 
     <h3>Closest Buses</h3>
     <p>
     <!-- do doesnt do anything if @buses is empty -->
     <% @buses.each do |bus| %>
-      <strong>Route:</strong> <%= bus["ROUTE"] %> <%= bus["DIRECTION"] %><br>
+      <strong><i class="fa fa-bus"></i> Route:</strong> <%= bus["ROUTE"] %> <%= bus["DIRECTION"] %><br>
       <strong>Bus Number:</strong> <%= bus["VEHICLE"] %><br>
       <strong>Next Stop:</strong> <%= bus["TIMEPOINT"] %><br><br>
     <% end %>
@@ -30,8 +34,12 @@
       <p>Not really that close. Time to walk, bike, taxi, Uber, or <%= link_to 'Edit your location', edit_location_path(@location) %>.</p>
     <% end %>
    </div>
-  <div class="col-sm-2"></div>
+   <div class="col-sm-6" style="padding-top:25px;">
+      <div id="map"></div>
+   </div>
+  <div class="col-sm-1"></div>
 </div>
+
 
   <script>
     //changed google's code by creating mapOptions
@@ -42,7 +50,7 @@
           lat: <%= @location.latitude %>,
           lng: <%= @location.longitude %>
         };
-        var userIcon = "<%= image_path 'beachflag.png' %>"
+        var userIcon = "<%= image_path 'smiley_happy.png' %>"
 
         // converts ruby to json/javascript
         var nearbyBuses = <%= raw @buses.to_json %>
@@ -60,6 +68,8 @@
           icon: userIcon
         });
 
+      var busIcon = "<%= image_path 'bus3.png' %>"
+
       nearbyBuses.forEach(function (element){
       var busLatLng = new google.maps.LatLng(element['LATITUDE'], element['LONGITUDE']);
 
@@ -67,11 +77,12 @@
         position: busLatLng,
         map: map,
         animation: google.maps.Animation.DROP,
-        title: element['ROUTE']
+        title: element['ROUTE'],
+        icon: busIcon
         });
 
-        var busInfo = '<div id="content">' +
-                  '<h2>Bus ' + element['ROUTE'] + ' ' + element['DIRECTION'] + '</h2>' + '<div id=bodyContent>' + '<p>Next Stop:' + ' ' + element['TIMEPOINT'] + '</p>' + '</div>' + '</div>'
+      var busInfo = '<div id="content" class="busMapBox">' +
+                  '<h3>Bus ' + element['ROUTE'] + ' ' + element['DIRECTION'] + '</h3>' + '<div id=bodyContent>' + '<p>Next Stop:' + ' ' + element['TIMEPOINT'] + '</p>' + '</div>' + '</div>'
 
       var busWindow = new google.maps.InfoWindow({
         content: busInfo
